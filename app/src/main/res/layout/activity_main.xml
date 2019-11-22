@@ -1,18 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <TextView
+    <Button
+        android:id="@+id/bt_register"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:text="注册test消息事件" />
 
-</android.support.constraint.ConstraintLayout>
+    <Button
+        android:id="@+id/bt_send_message_putong"
+        android:layout_below="@id/bt_register"
+        android:layout_width="wrap_content"
+        android:text="发送test消息(普通方式)"
+        android:layout_height="wrap_content"/>
+
+    <Button
+        android:id="@+id/bt_send_message_mian_thread"
+        android:layout_below="@id/bt_send_message_putong"
+        android:layout_width="wrap_content"
+        android:text="发送test消息(发到主线程)"
+        android:layout_height="wrap_content"/>
+
+    <Button
+        android:id="@+id/bt_un_register_message_event"
+        android:layout_width="wrap_content"
+        android:text="注销test消息事件"
+        android:layout_below="@id/bt_send_message_mian_thread"
+        android:layout_height="wrap_content"/>
+
+</RelativeLayout>

@@ -4,8 +4,8 @@ import android.os.Handler;
 import android.os.Looper;
 import android.support.v4.app.FragmentActivity;
 
-import com.ellen.libcommon.util.ActivityLifeListener.ActivityLifeListener;
-import com.ellen.libcommon.util.ActivityLifeListener.ActivityLifeListenerManager;
+import com.ellen.supermessagelibrary.ActivityLifeListener.ActivityLifeListener;
+import com.ellen.supermessagelibrary.ActivityLifeListener.ActivityLifeListenerManager;
 
 import java.util.Hashtable;
 import java.util.LinkedList;
@@ -68,17 +68,14 @@ public class MessageManager {
     private void registerMessageEvent(final SuperMessage message, final BaseEvent baseEvent) {
         if (message == null) return;
         if(baseEvent == null){
-            if(baseEvent instanceof MessageEventTrigger){
-                MessageEventTrigger eventTrigger = (MessageEventTrigger) baseEvent;
-                eventTrigger.registerEventFailure(message);
-            }
+            baseEvent.registerEventFailure(message);
             return;
         }
         if (messageMaps == null) {
             messageMaps = new Hashtable<>();
         }
         if (message.getMessageId() == null) {
-            throw new MessageIdNullException("0", "消息id为null异常");
+            throw new MessageIdNullException("消息id为null异常");
         }
         List<BaseEvent> baseEventList = messageMaps.get(message);
         if (baseEventList == null) {
@@ -88,10 +85,7 @@ public class MessageManager {
         } else {
             baseEventList.add(baseEvent);
         }
-        if(baseEvent instanceof MessageEventTrigger){
-            MessageEventTrigger eventTrigger = (MessageEventTrigger) baseEvent;
-            eventTrigger.registerEventSuccess(message);
-        }
+        baseEvent.registerEventSuccess(message);
         //检测粘性事件
         if (stickMessageMap != null) {
             boolean isContains = stickMessageMap.containsKey(message.getMessageId());
@@ -130,34 +124,22 @@ public class MessageManager {
         if(message == null)return;
         if(messageMaps == null)return;
         if(baseEvent == null) {
-            if(baseEvent instanceof MessageEventTrigger){
-                MessageEventTrigger eventTrigger = (MessageEventTrigger) baseEvent;
-                eventTrigger.unRegisterEventFailure(message);
-            }
+            baseEvent.registerEventFailure(message);
             return;
         }
         if (message.getMessageId() == null) {
-            throw new MessageIdNullException("0", "消息id为null异常");
+            throw new MessageIdNullException("消息id为null异常");
         }
         List<BaseEvent> baseEventList = messageMaps.get(message);
         if (baseEventList != null) {
             boolean isRemove = baseEventList.remove(baseEvent);
             if(isRemove) {
-                if (baseEvent instanceof MessageEventTrigger) {
-                    MessageEventTrigger eventTrigger = (MessageEventTrigger) baseEvent;
-                    eventTrigger.unRegisterEventSuccess(message);
-                }
+                baseEvent.unRegisterEventSuccess(message);
             }else {
-                if(baseEvent instanceof MessageEventTrigger){
-                    MessageEventTrigger eventTrigger = (MessageEventTrigger) baseEvent;
-                    eventTrigger.unRegisterEventFailure(message);
-                }
+                baseEvent.unRegisterEventFailure(message);
             }
         }else {
-            if(baseEvent instanceof MessageEventTrigger){
-                MessageEventTrigger eventTrigger = (MessageEventTrigger) baseEvent;
-                eventTrigger.unRegisterEventFailure(message);
-            }
+            baseEvent.unRegisterEventFailure(message);
         }
     }
 
@@ -176,7 +158,7 @@ public class MessageManager {
         if (messageMaps == null) return;
         if (message.getMessageId() == null) {
             //抛出异常
-            throw new MessageIdNullException("0", "消息id为null异常");
+            throw new MessageIdNullException("消息id为null异常");
         } else {
             List<BaseEvent> baseEventList = messageMaps.get(message);
             if(allMessageInterceptorList != null){
@@ -219,7 +201,7 @@ public class MessageManager {
         if (message == null) { return;}
         if (message.getMessageId() == null) {
             //抛出异常
-            throw new MessageIdNullException("0", "消息id为null异常");
+            throw new MessageIdNullException("消息id为null异常");
         }
         if (stickMessageMap == null) {
             stickMessageMap = new Hashtable<>();
