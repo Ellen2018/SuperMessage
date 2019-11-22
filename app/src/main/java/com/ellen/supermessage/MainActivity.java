@@ -16,6 +16,8 @@ public class MainActivity extends AppCompatActivity {
 
     private String messageId = "test";
     private BaseEvent baseEvent;
+    //全局消息拦截器
+    private AllMessageInterceptor allMessageInterceptor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,8 +27,8 @@ public class MainActivity extends AppCompatActivity {
         sendMessagePuTong();
         sendMessageMainThread();
         unRegisterMessageEvent();
-        //添加全局消息拦截器
-        MessageManager.getInstance().addMessageInterceptor(new AllMessageInterceptor() {
+        //添加全局消息拦截器(整个项目下任何位置都可以添加)
+        MessageManager.getInstance().addMessageInterceptor(allMessageInterceptor = new AllMessageInterceptor() {
             @Override
             public void haveEffectiveMessage(SuperMessage superMessage) {
                 //当发送的消息为有效的(触发了至少一个消息事件)消息回调这里
@@ -45,6 +47,8 @@ public class MainActivity extends AppCompatActivity {
                 Log.e("Ellen2018","有位置发送了消息:"+superMessage.getMessageId());
             }
         });
+        //移除全部消息拦截器(不用时记得移除，防止内存泄漏,后期会添加Activity生命周期绑定)
+        //MessageManager.getInstance().removeMessageInterceptor(allMessageInterceptor);
     }
 
     private void unRegisterMessageEvent() {
