@@ -35,12 +35,31 @@ public class MessageManager {
         return messageManager;
     }
 
-    public void addMessageInterceptor(AllMessageInterceptor allMessageInterceptor){
+    public void addMessageInterceptor(final AllMessageInterceptor allMessageInterceptor){
         if(allMessageInterceptor == null)return;
         if(allMessageInterceptorList == null){
             allMessageInterceptorList = new Vector<>();
         }
         allMessageInterceptorList.add(allMessageInterceptor);
+        FragmentActivity activity = allMessageInterceptor.bindActivity();
+        if(activity != null){
+            new ActivityLifeListenerManager().startActivityLifeListener(activity, new ActivityLifeListener() {
+                @Override
+                public void onStart() {
+
+                }
+
+                @Override
+                public void onStop() {
+
+                }
+
+                @Override
+                public void onDestory() {
+                   removeMessageInterceptor(allMessageInterceptor);
+                }
+            });
+        }
     }
 
     public void removeMessageInterceptor(AllMessageInterceptor allMessageInterceptor){

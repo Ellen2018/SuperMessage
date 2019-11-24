@@ -1,5 +1,7 @@
 package com.ellen.supermessagelibrary;
 
+import android.support.v4.app.FragmentActivity;
+
 /**
  * 全局消息拦截器
  */
@@ -22,5 +24,11 @@ public interface AllMessageInterceptor {
      * @param superMessage
      */
     void haveMessage(SuperMessage superMessage);
+
+    /**
+     * 绑定对应的Activity,达到自动解绑全局消息事件
+    * @return
+     */
+    FragmentActivity bindActivity();
 
 }
