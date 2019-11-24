@@ -46,6 +46,11 @@ public class MainActivity extends AppCompatActivity {
                //每发送一个消息都会触发这里(除了null的空消息)
                 Log.e("Ellen2018","有位置发送了消息:"+superMessage.getMessageId());
             }
+
+            @Override
+            public FragmentActivity bindActivity() {
+                return MainActivity.this;
+            }
         });
         //移除全部消息拦截器(不用时记得移除，防止内存泄漏,后期会添加Activity生命周期绑定)
         //MessageManager.getInstance().removeMessageInterceptor(allMessageInterceptor);
