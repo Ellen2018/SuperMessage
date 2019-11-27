@@ -249,7 +249,7 @@ public class MessageManager {
         }
     }
 
-    public void sendMainThreadMessage(String messageId){
+    public void sendEmptyMainThreadMessage(String messageId){
         SuperMessage superMessage = new SuperMessage(messageId);
         sendMainThreadMessage(superMessage);
     }
