@@ -212,7 +212,7 @@ public class MessageManager {
     }
 
     /**
-     * 发送粘性消息
+     * 发送粘性消息(重复发送消息内容被最新的覆盖)
      *
      * @param message
      */
