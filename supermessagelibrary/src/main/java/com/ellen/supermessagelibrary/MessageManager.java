@@ -19,7 +19,7 @@ public class MessageManager {
     private Map<String, SuperMessage> stickMessageMap;
     private List<AllMessageInterceptor> allMessageInterceptorList;
 
-    private static MessageManager messageManager;
+    private static volatile MessageManager messageManager;
 
     private MessageManager() {
     }
