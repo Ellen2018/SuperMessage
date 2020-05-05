@@ -8,7 +8,6 @@ import com.ellen.supermessagelibrary.ActivityLifeListener.ActivityLifeListener;
 import com.ellen.supermessagelibrary.ActivityLifeListener.ActivityLifeListenerManager;
 
 import java.util.Hashtable;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Vector;
@@ -98,7 +97,7 @@ public class MessageManager {
         }
         List<BaseEvent> baseEventList = messageMaps.get(message);
         if (baseEventList == null) {
-            baseEventList = new LinkedList<>();
+            baseEventList = new Vector<>();
             baseEventList.add(baseEvent);
             messageMaps.put(message, baseEventList);
         } else {
