@@ -8,6 +8,7 @@ import com.ellen.supermessagelibrary.ActivityLifeListener.ActivityLifeListener;
 import com.ellen.supermessagelibrary.ActivityLifeListener.ActivityLifeListenerManager;
 
 import java.util.Hashtable;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Vector;
@@ -151,7 +152,14 @@ public class MessageManager {
         List<BaseEvent> baseEventList = messageMaps.get(message);
         if (baseEventList != null) {
             boolean isRemove;
-            //加锁防止java.util.ConcurrentModificationException异常
+            //用迭代器删除防止java.util.ConcurrentModificationException异常
+            Iterator<BaseEvent> it_b = baseEventList.iterator();
+            while(it_b.hasNext()){
+                BaseEvent be1 = it_b.next();
+                if (be1 == baseEvent) {
+                    it_b.remove();
+                }
+            }
             synchronized (MessageManager.class) {
                 isRemove = baseEventList.remove(baseEvent);
             }
@@ -196,11 +204,11 @@ public class MessageManager {
                         }
                     }
                 }
-                //加锁防止java.util.ConcurrentModificationException异常
-                synchronized (MessageManager.class) {
-                    for (BaseEvent baseEvent : baseEventList) {
-                        baseEvent.handleMessage(message);
-                    }
+                //迭代器访问防止：java.util.ConcurrentModificationException异常
+                Iterator<BaseEvent> it_b = baseEventList.iterator();
+                while (it_b.hasNext()){
+                    BaseEvent baseEvent = it_b.next();
+                    baseEvent.handleMessage(message);
                 }
             }else {
                 if(allMessageInterceptorList != null){
