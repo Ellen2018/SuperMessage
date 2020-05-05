@@ -9,11 +9,11 @@ public abstract class BaseEvent {
 
     private boolean isRemove = false;
 
-    public boolean isRemove() {
+    boolean isRemove() {
         return isRemove;
     }
 
-    public void setRemove(boolean remove) {
+    void setRemove(boolean remove) {
         isRemove = remove;
     }
 
