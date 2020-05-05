@@ -2,7 +2,7 @@ package com.ellen.supermessagelibrary;
 
 import android.support.v4.app.FragmentActivity;
 
-public abstract class MessageEventTrigger implements BaseEvent {
+public abstract class MessageEventTrigger extends BaseEvent {
 
     @Override
     public void registerEventSuccess(SuperMessage superMessage) {
