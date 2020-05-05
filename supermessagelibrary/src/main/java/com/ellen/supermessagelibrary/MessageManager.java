@@ -150,7 +150,11 @@ public class MessageManager {
         }
         List<BaseEvent> baseEventList = messageMaps.get(message);
         if (baseEventList != null) {
-            boolean isRemove = baseEventList.remove(baseEvent);
+            boolean isRemove;
+            //加锁防止java.util.ConcurrentModificationException异常
+            synchronized (MessageManager.class) {
+                isRemove = baseEventList.remove(baseEvent);
+            }
             if(isRemove) {
                 baseEvent.unRegisterEventSuccess(message);
             }else {
@@ -192,8 +196,11 @@ public class MessageManager {
                         }
                     }
                 }
-                for (BaseEvent baseEvent : baseEventList) {
-                    baseEvent.handleMessage(message);
+                //加锁防止java.util.ConcurrentModificationException异常
+                synchronized (MessageManager.class) {
+                    for (BaseEvent baseEvent : baseEventList) {
+                        baseEvent.handleMessage(message);
+                    }
                 }
             }else {
                 if(allMessageInterceptorList != null){
