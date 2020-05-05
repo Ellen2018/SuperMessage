@@ -155,8 +155,8 @@ public class MessageManager {
             //用迭代器删除防止java.util.ConcurrentModificationException异常
             Iterator<BaseEvent> it_b = baseEventList.iterator();
             while(it_b.hasNext()){
-                BaseEvent be1 = it_b.next();
-                if (be1 == baseEvent) {
+                BaseEvent baseEvent1 = it_b.next();
+                if (baseEvent1 == baseEvent) {
                     isRemove = true;
                     it_b.remove();
                 }
