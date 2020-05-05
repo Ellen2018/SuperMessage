@@ -7,6 +7,7 @@ import android.support.v4.app.FragmentActivity;
 import com.ellen.supermessagelibrary.ActivityLifeListener.ActivityLifeListener;
 import com.ellen.supermessagelibrary.ActivityLifeListener.ActivityLifeListenerManager;
 
+import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
@@ -157,8 +158,9 @@ public class MessageManager {
             while(it_b.hasNext()){
                 BaseEvent baseEvent1 = it_b.next();
                 if (baseEvent1 == baseEvent) {
+                    baseEvent.setRemove(true);
                     isRemove = true;
-                    it_b.remove();
+                    break;
                 }
             }
             if(isRemove) {
@@ -203,10 +205,23 @@ public class MessageManager {
                     }
                 }
                 //迭代器访问防止：java.util.ConcurrentModificationException异常
-                Iterator<BaseEvent> it_b = baseEventList.iterator();
-                while (it_b.hasNext()){
-                    BaseEvent baseEvent = it_b.next();
-                    baseEvent.handleMessage(message);
+                synchronized (MessageManager.class) {
+                    List<BaseEvent> baseEvents = null;
+                    for(BaseEvent baseEvent:baseEventList){
+                        if(!baseEvent.isRemove()) {
+                            baseEvent.handleMessage(message);
+                        }else {
+                            if(baseEvents == null){
+                                baseEvents = new ArrayList<>();
+                            }
+                            baseEvents.add(baseEvent);
+                        }
+                    }
+                    if(baseEvents != null && baseEvents.size() > 0) {
+                        for (BaseEvent baseEvent : baseEvents) {
+                            baseEventList.remove(baseEvent);
+                        }
+                    }
                 }
             }else {
                 if(allMessageInterceptorList != null){
